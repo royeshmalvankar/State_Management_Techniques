@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+  </head>
+  <style>
+  button {
+      display: block;
+      padding: 10px;
+      margin: 10px;
+      margin-top: 30px;
+      border-radius: 10px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1 {
+        text-align: center;
+    }
+    #quiz {
+        align-items: center;
+        border: 1px dotted red;
+        text-align: center;
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+  </style>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // Your  code will go here
+
+    // variable to capture root id
+    let root = document.getElementById("root");
+
+    // component function
+    let Quiz = () => {
+        // state declaration
+        const [a1,setA1] = React.useState("");
+        const [a2,setA2] = React.useState("");
+        const [a3,setA3] = React.useState("");
+        const [score,setScore] = React.useState(0);
+        const [flag,setFlag] = React.useState(false);
+
+        // function to check answer
+        let checkAnswer = () => {
+            setFlag(true);
+            if(a1 == "Camel"){
+                setScore((prev)=>prev+1);
+
+            }
+            if(a2 == "Nile river"){
+                setScore((prev)=>prev+1);
+
+            }
+            if(a3 == "Australia"){
+                setScore((prev)=>prev+1);
+
+            }
+            else{
+                console.log("wrong answer");
+            }
+
+
+        }
+        // function to reset
+        let reset = () => {
+            setFlag(false);
+            setScore(0);
+            setA1("");
+            setA2("");
+            setA3("");
+        }
+        return (
+            <>
+    {/* if flag is true then display score else display quiz */}
+            {flag ? 
+                <>
+                <h1>Your score is {score}</h1> 
+                <button onClick={reset}>Reset</button>
+                </>
+            
+            :
+            <>
+                <h1>Quiz</h1>
+                <div id="quiz">
+                    <h2>1. Which animal is known as the 'Ship of the Desert"?</h2>
+                    <select name="" id="" onChange={(e) => setA1(e.target.value)}>
+                        <option value="">Select an option</option>
+                        <option value="Camel">Camel</option>
+                        <option value="Desert bighor Sheep">Desert bighor Sheep</option>
+                        <option value="Lion">Lion</option>
+                        <option value="Cheetah">Cheetah</option>
+                    </select>
+
+                    <h2>2. Which of the following is the longest river in the world?</h2>
+                    <select name="" id="" onChange={(e) => setA2(e.target.value)}>
+                        <option value="">Select an option</option>
+                        <option value="Yellow river">Yellow river</option> 
+                        <option value="Nile river">Nile river</option>
+                        <option value="Amazon river">Amazon river</option>
+                        <option value="Rhine river">Rhine river</option>
+                    </select>
+
+                    <h2>3. Which of the following is the smallest continent?</h2>
+                    <select name="" id="" onChange={(e) => setA3(e.target.value)} placeholder="Select an option">
+                        <option value="">Select an option</option>
+                        <option value="Asia">Asia</option>
+                        <option value="Africa">Africa</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Antarctica">Antarctica</option>
+                    </select>
+
+                    <button onClick={checkAnswer}>Submit</button>
+                </div>
+
+                
+                </>
+            }
+            </>
+        )
+    }
+    // rendering
+    ReactDOM.createRoot(root).render(<Quiz />);
+  </script>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+  </head>
+  <style>
+    #root > div > button{
+        padding: 5px;
+        margin: 10px;
+    }
+    #root {
+        text-align: center;
+    }
+    span {
+        color: red;
+        font-size: 25px;
+    }
+  </style>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // Your  code will go here
+
+    // variable to capture root id
+    let root = document.getElementById("root");
+
+    // component function
+    let Todo = () => {
+        // state declaration
+        const [todos,setTodos] = React.useState([{todo:"",status:null}]);
+        const [sort,setSort] = React.useState([]);
+        const [flag,setFlag] = React.useState(false);
+
+        // function to change todo and status
+        let settodo = (e,i) => {
+            if(todos.status == null)
+            {
+                todos[0].status = false;
+            }
+            let todoarr = [...todos];
+            if(e.target.name === "todo")
+            {
+                todoarr[i].todo= e.target.value;
+                console.log("todoarr",i,"=",e.target.value);
+                console.log(todos);
+            }
+            else{
+                todoarr[i].status = e.target.checked;
+            }   
+            
+            setTodos(todoarr);
+
+        }
+        // function to add todo
+        let addTodo = () => {
+            setTodos([...todos,{todo:"",status:false}])
+        }
+        // function to delete todo
+        let deleteTodo = (i) => {
+            let filter= todos.filter((t,idx) =>{
+                 return idx != i
+            })
+            setTodos(filter);
+        }
+        // function to filter todo
+        let filterTodo = (e) => {
+            setFlag(true);
+            if(e.target.value === "Active")
+            {
+                let filterdata= todos.filter((t) => t.status === false)
+                setSort(filterdata)   
+            }
+            else if(e.target.value === "completed")
+            {
+                let filterdata= todos.filter((t) => t.status === true)
+                setSort(filterdata)
+            }
+            else
+            {
+                setFlag(false);
+            }  
+        }
+        return (
+            <>
+            <h1>Todo</h1>
+            <label for="">Filter: </label>
+            {/* select tag to filter todo */}
+            <select name="" id="" onChange={(e) => filterTodo(e)}>
+                <option value="all">All</option>
+                <option value="Active">Active</option>
+                <option value="completed">Completed</option>
+            </select>
+            {flag ? <button style={{marginLeft:"10px"}} onClick={() => setFlag(false)}>Back</button>:null}
+            {/* if flag is true then display filtered todo list else display todo list */}
+            {flag ? 
+                <>
+                {sort.length === 0 || sort.length === 1 && sort.todo === "" && sort.status === false ? <h1>No todos</h1> : sort.map((t,i) => {
+                    return (
+                        <div key={i}>
+                            <div>
+                                <h1>Todo: <span>{t.todo}</span></h1>
+                                <h1>Status: <span>{t.status ? "Completed" : "Active"}</span> </h1> 
+                            </div>
+                        </div>
+                    )
+                })}
+                </> 
+                : todos.map((t,i) => {
+                return (
+                    <div key={i}>
+                        <label >Todo: </label>
+                        <input type="text" name="todo" value={t.todo} onChange={(e) => settodo(e,i)} placeholder="Enter Todo"/>
+                        <label  style={{marginLeft:"10px"}}>Status: </label>
+                        <input type="checkbox" name="check" checked={t.status} onChange={(e) => settodo(e,i)}/>
+                        <button onClick={addTodo}>Add</button>
+                        <button onClick={(e) => deleteTodo(i) } disabled={todos.length==1}>Delete</button>
+                    </div>
+                )
+            })}
+            </>
+        )
+    }
+    // rendering
+    ReactDOM.createRoot(root).render(<Todo />);
+  </script>
+</html>

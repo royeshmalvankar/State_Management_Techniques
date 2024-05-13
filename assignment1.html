@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+  </head>
+  <style>
+    #root{
+        display: block;
+    }
+    #root > div{
+        margin-top: 10px;
+    }
+  </style>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // Your  code will go here
+
+    // variable to catch the root id
+    let root = document.getElementById("root");
+
+    // component function
+    let App = () => {
+        // state declaration
+        let [value, setValue] = React.useState("");
+        // function to validate the hexa code
+        function isValidHexaCode(value) {
+            let str = value;
+           if (str[0] != '#' && str.length !== 0)
+               return false;
+ 
+           if (!(str.length == 4 || str.length == 7))
+               return str.length != 0 && str[0] != '#' ?console.log(false): console.log(true);;
+
+           for (let i = 1; i < str.length; i++)
+               if (!((str[i].charCodeAt(0) <= '0'.charCodeAt(0) && str[i].charCodeAt(0) <= 9)
+                   || (str[i].charCodeAt(0) >= 'a'.charCodeAt(0) && str[i].charCodeAt(0) <= 'f'.charCodeAt(0))
+                   || (str[i].charCodeAt(0) >= 'A'.charCodeAt(0) || str[i].charCodeAt(0) <= 'F'.charCodeAt(0))))
+                   console.log(str[i]);
+                   return false;
+           return true;
+       }
+        // returning jsx
+        return (
+            <>
+            <input type="text" value={value} onChange={(e) => setValue(e.target.value)}/>
+            <div style={{backgroundColor: value, height: "70px", width: "70px",border:"1px solid black"}}>
+            {isValidHexaCode(value) ? null : "Hexa Code Invalid"}
+            </div>
+            </>
+        )
+    }
+    // rendering
+    ReactDOM.createRoot(root).render(<App />);
+  </script>
+</html>

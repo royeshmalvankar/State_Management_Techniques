@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+  </head>
+  <style>
+    #hby{
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+    #hby > input{
+        display: block;
+        margin-left: 4px;
+    }
+    #hby > button{
+        margin: 5px 0px 0px 5px;
+    }
+    #root>button{
+        margin-left: 15px;
+    }
+  </style>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // Your  code will go here
+
+    // variable to capture root id
+    let root = document.getElementById("root");
+    // component function
+    let DynamicInput = () => {
+        // state declaration
+        let [data, setData] = React.useState([{value:""}]);
+        // function to change input value 
+        let changeHobby = (e,i) => {
+            let dtarr = [...data];
+            dtarr[i].value = e.target.value;
+            setData(dtarr);
+        }
+        // function to add hobby
+        let addhobbies = () => {
+            setData([...data, {value:""}])
+        }
+        // function to delete hobby
+        let deleteHobby = (i) => {
+            let filterdata= data.filter((d,idx) =>{
+                 return idx != i
+            });
+            setData(filterdata);
+        }
+        // function to submit the form
+        let formsubmit = () => {
+            console.log(data);
+        }
+        // returning jsx
+        return (
+            <>
+            {/* maping the data */}
+            {data.map((d,i) =>{
+                return(
+                    <div key={i} id="hby">
+                    <input type="text" value={d.value} onChange={(e)=>changeHobby(e,i)} placeholder="Enter Hobbies"/>
+                    <button onClick={addhobbies}>Add Hobbies</button>
+                    <button onClick={()=>deleteHobby(i)} disabled={data.length==1}>Delete Hobbies</button>
+                    </div>
+                )
+            }
+        )}
+                <button onClick={formsubmit}>Submit</button>
+            </>
+        )
+
+    }
+    // rendering
+    ReactDOM.createRoot(root).render(<DynamicInput />);
+  </script>
+</html>
